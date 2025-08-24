@@ -1,0 +1,1 @@
+import{_ as a,c as o,g as r,b as s,t,F as l,o as u}from"./index-GoinUiKB.js";const m={};function d(n,e){return u(),o(l,null,[e[0]||(e[0]=r(" 个人主页")),e[1]||(e[1]=s("hr",null,null,-1)),r(" id:"+t(n.$route.params.id),1),e[2]||(e[2]=s("hr",null,null,-1)),r(" name:"+t(n.$route.params.name),1)],64)}const p=a(m,[["render",d]]);export{p as default};
