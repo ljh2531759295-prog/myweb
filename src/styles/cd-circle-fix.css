@@ -1,0 +1,150 @@
+/* ===== CD圆形动画修复样式 ===== */
+/* 专门修复CD动画在不同环境中变椭圆的问题 */
+
+/* 确保CD动画保持圆形 */
+.cd-spinning {
+  /* 强制保持圆形 */
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1;
+  transform-origin: center center !important;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* 确保播放时的容器保持正方形 */
+.song-card.playing .cover-container {
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+}
+
+/* 确保图片保持圆形 */
+.cd-spinning img {
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+/* 针对大型播放器的CD容器修复 */
+.cd-container,
+.album-cover-wrapper {
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+}
+
+.cd-disc,
+.album-cover {
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* 修复旋转动画的transform-origin */
+.cd-spinning,
+.cd-disc.spinning,
+.album-cover.rotating {
+  transform-origin: center center !important;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* 为不支持aspect-ratio的环境提供fallback */
+@supports not (aspect-ratio: 1) {
+  .song-card.playing .cover-container {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    position: relative;
+  }
+
+  .song-card.playing .cover-container .cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* 高DPI屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .cd-spinning,
+  .cd-disc.spinning,
+  .album-cover.rotating {
+    /* 在高DPI屏幕上确保动画流畅 */
+    transform: translateZ(0);
+    perspective: 1000px;
+  }
+}
+
+/* 响应式修复 - 移动端 */
+@media (max-width: 768px) {
+  .song-card.playing .cover-container {
+    /* 移动端确保圆形 */
+    width: 100% !important;
+    height: 0 !important;
+    padding-bottom: 100% !important;
+  }
+}
+
+/* 移除过度的修复，保持原有布局 */
+
+/* 确保CD动画的圆形边框不变形 */
+.cd-spinning {
+  /* 强制保持圆形边框 */
+  border-radius: 50% !important;
+  box-sizing: border-box !important;
+}
+
+/* 修复可能的图片变形 */
+.cd-spinning img,
+.cd-disc img,
+.album-cover img {
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 确保伪元素（CD中心孔、反光效果等）也保持圆形 */
+.cd-spinning::before,
+.cd-spinning::after,
+.cd-disc::before,
+.cd-disc::after,
+.album-cover::before,
+.album-cover::after {
+  border-radius: 50% !important;
+}
+
+/* 针对特定播放器组件的修复 */
+.integrated-player .album-cover-wrapper,
+.full-player .cd-container,
+.player-popup .cd-container {
+  /* 播放器弹窗中的特殊处理 */
+  aspect-ratio: 1 / 1 !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+}
+
+/* 最终保险措施：如果所有方法都失效 */
+@supports not (aspect-ratio: 1) {
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .song-card.playing .cover-container,
+    .cd-container,
+    .album-cover-wrapper {
+      /* 强制使用padding-bottom方法 */
+      width: 100% !important;
+      height: 0 !important;
+      padding-bottom: 100% !important;
+      position: relative !important;
+    }
+    
+    .song-card.playing .cover-container > *,
+    .cd-container > *,
+    .album-cover-wrapper > * {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+}
