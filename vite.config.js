@@ -26,7 +26,7 @@ export default defineConfig({
     }
   },
 
-  base: './',  // 设置相对路径，用于Electron打包
+  base: '/myweb/',  
 
   build: {
     outDir: 'dist',
